@@ -1,0 +1,11 @@
+target/
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+docs/
+.vscode
+.idea
+out
+
+package/linux/JRelay
+package/linux/JRelay.deb
