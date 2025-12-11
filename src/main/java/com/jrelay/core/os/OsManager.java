@@ -47,7 +47,7 @@ public class OsManager {
 
     private static OsManager instance;
 
-    private final String USER_HOME;
+    private static final String USER_HOME = System.getProperty("user.home");
 
     @Getter
     private final Os operatingSystem;
@@ -66,7 +66,6 @@ public class OsManager {
         this.operatingSystem = detectOs();
         this.theme = detectTheme();
         this.language = detectLanguage();
-        this.USER_HOME = System.getProperty("user.home");
     }
 
     public static OsManager getInstance() {
@@ -97,7 +96,7 @@ public class OsManager {
      * Detects whether the system is using a dark or light UI theme.
      *
      * @return {@code Theme.DARK} if dark mode is active, otherwise
-     * {@code Theme.LIGHT}
+     *         {@code Theme.LIGHT}
      */
     private Theme detectTheme() {
         return OsThemeDetector.getDetector().isDark() ? Theme.DARK : Theme.LIGHT;
@@ -206,6 +205,5 @@ public class OsManager {
         }
         return path;
     }
-
 
 }

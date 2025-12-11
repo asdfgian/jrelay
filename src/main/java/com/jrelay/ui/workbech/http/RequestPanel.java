@@ -10,6 +10,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JToggleButton;
+
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 
 import com.jrelay.core.models.request.Request;
@@ -133,7 +135,7 @@ public class RequestPanel extends JPanel implements Struct, Translatable {
             Style.setRoundComponent(containerSearch);
             Style.setBackgroundColor(urlField, Colors.SECONDARY_COLOR);
             Style.setCursor(methodComboBox, Cursor.HAND_CURSOR);
-            Style.setFontSize(methodComboBox, 13f);
+            Style.setFontSize(methodComboBox, 15f);
             Style.setFontSize(sendButton, 15f);
             Style.setCursor(sendButton, Cursor.HAND_CURSOR);
             Style.setCursor(saveButton, Cursor.HAND_CURSOR);
@@ -535,7 +537,10 @@ public class RequestPanel extends JPanel implements Struct, Translatable {
         }
 
         public class BodyJsonPanel extends JPanel implements Struct {
+            private final JPanel container = new JPanel();
             private final JLabel title = new JLabel("JSON (application/json)");
+            @Getter
+            private final JToggleButton lineWrapButton = new JToggleButton(UiUtils.LINE_WRAP_ICON);
             @Getter
             private final SyntaxEditor jsonEditor = new SyntaxEditor(
                     SyntaxConstants.SYNTAX_STYLE_JSON_WITH_COMMENTS);
@@ -552,12 +557,19 @@ public class RequestPanel extends JPanel implements Struct, Translatable {
             public void configureStyle() {
                 Style.setTransparent(this);
                 Style.setLayout(this, new MigLayout("fill, insets 10", "[grow]", "[]10[grow]"));
+                Style.setLayout(container, new MigLayout("fill, aligny 50%, insets 0", "[]push[]"));
+                Style.setCursor(lineWrapButton, Cursor.HAND_CURSOR);
+                Style.setBackgroundColor(lineWrapButton, Colors.SECONDARY_COLOR);
+                Style.setUndecoratedButton(lineWrapButton);
+                Style.setToolTip(lineWrapButton, LangManager.text("app.panel.lineWrapButton.deactivate.toolTip.text"));
                 jsonEditor.setEditable(true);
             }
 
             @Override
             public void compose() {
-                this.add(title, "wrap");
+                container.add(title);
+                container.add(lineWrapButton, "w 25!, h 25!");
+                this.add(container, "wrap, growx");
                 this.add(jsonEditor, "grow");
             }
 
@@ -571,7 +583,10 @@ public class RequestPanel extends JPanel implements Struct, Translatable {
         }
 
         public class BodyXmlPanel extends JPanel implements Struct {
+            private final JPanel container = new JPanel();
             private final JLabel title = new JLabel("XML (application/xml)");
+            @Getter
+            private final JToggleButton lineWrapButton = new JToggleButton(UiUtils.LINE_WRAP_ICON);
             @Getter
             private final SyntaxEditor xmlEditor = new SyntaxEditor(SyntaxConstants.SYNTAX_STYLE_XML);
 
@@ -587,12 +602,19 @@ public class RequestPanel extends JPanel implements Struct, Translatable {
             public void configureStyle() {
                 Style.setTransparent(this);
                 Style.setLayout(this, new MigLayout("fill, insets 10", "[grow]", "[]10[grow]"));
+                Style.setLayout(container, new MigLayout("fill, aligny 50%, insets 0", "[]push[]"));
+                Style.setCursor(lineWrapButton, Cursor.HAND_CURSOR);
+                Style.setBackgroundColor(lineWrapButton, Colors.SECONDARY_COLOR);
+                Style.setUndecoratedButton(lineWrapButton);
+                Style.setToolTip(lineWrapButton, LangManager.text("app.panel.lineWrapButton.deactivate.toolTip.text"));
                 xmlEditor.setEditable(true);
             }
 
             @Override
             public void compose() {
-                this.add(title, "wrap");
+                container.add(title);
+                container.add(lineWrapButton, "w 25!, h 25!");
+                this.add(container, "wrap, growx");
                 this.add(xmlEditor, "grow");
             }
 

@@ -57,17 +57,25 @@ public class ClosableTab extends JPanel implements Struct {
     @Override
     public void configureStyle() {
         Style.setLayout(this, new MigLayout("fill", "[]10[]3[]"));
+        Style.setCursor(this, Cursor.HAND_CURSOR);
         Style.setInsets(this, 6, 15, 7, 10);
         Style.setTransparent(this);
         Style.setFontSize(methodLabel, 12.5f);
         Style.setTextColor(methodLabel, Style.getColorByMethod("GET"));
         Style.setTransparent(closeButton);
-        Style.setCursor(closeButton, Cursor.HAND_CURSOR);
         Style.setFontSize(titleLabel, 13.5f);
     }
 
     @Override
     public void attachLogic() {
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if (e.getButton() == 2) {
+                    closeButton.doClick();
+                }
+            }
+        });
         closeButton.addActionListener(e -> {
             if (!(tabGroup instanceof WorkbenchHttp workbenchHttp)) {
                 return;

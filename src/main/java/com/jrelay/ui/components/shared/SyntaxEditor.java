@@ -2,6 +2,7 @@ package com.jrelay.ui.components.shared;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Font;
 
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -50,6 +51,7 @@ public class SyntaxEditor extends RTextScrollPane implements Struct {
         Style.setFontSize(syntaxTextArea, 14f);
         Style.setBackgroundColor(syntaxTextArea, new JPanel().getBackground());
         Style.setCursor(syntaxTextArea, Cursor.TEXT_CURSOR);
+        syntaxTextArea.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         syntaxTextArea.setSyntaxScheme(scheme);
         syntaxTextArea.setAntiAliasingEnabled(true);
         syntaxTextArea.setEditable(false);
@@ -88,7 +90,7 @@ public class SyntaxEditor extends RTextScrollPane implements Struct {
         gutter.setFoldIndicatorEnabled(true);
         gutter.setLineNumberFont(syntaxTextArea.getFont());
 
-        //indenter
+        // indenter
         syntaxTextArea.setTabSize(2);
     }
 

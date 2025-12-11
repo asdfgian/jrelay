@@ -27,7 +27,6 @@ import com.jrelay.core.utils.StringUtils;
  * @author ASDFG14N
  * @since 14-08-2025
  */
-
 public record Response(
         Integer status,
         String duration,

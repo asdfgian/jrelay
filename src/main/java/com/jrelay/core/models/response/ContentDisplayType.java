@@ -32,23 +32,36 @@ public enum ContentDisplayType {
         if (contentType == null) {
             return BINARY;
         }
+
         String cleanType = contentType.split(";")[0].trim().toLowerCase();
+
         for (ContentDisplayType type : values()) {
-            for (String mime : type.mimeTypes) {
-                if (mime.endsWith("*")) {
-                    if (cleanType.startsWith(mime.substring(0, mime.length() - 1))) {
-                        return type;
-                    }
-                } else if (mime.contains("*")) {
-                    String regex = mime.replace("*", ".*");
-                    if (cleanType.matches(regex)) {
-                        return type;
-                    }
-                } else if (cleanType.equalsIgnoreCase(mime)) {
-                    return type;
-                }
+            if (matchesAnyMime(type, cleanType)) {
+                return type;
             }
         }
+
         return BINARY;
     }
+
+    private static boolean matchesAnyMime(ContentDisplayType type, String cleanType) {
+        for (String mime : type.mimeTypes) {
+            if (matchesMime(mime, cleanType)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean matchesMime(String mime, String cleanType) {
+        if (mime.endsWith("*")) {
+            return cleanType.startsWith(mime.substring(0, mime.length() - 1));
+        }
+        if (mime.contains("*")) {
+            String regex = mime.replace("*", ".*");
+            return cleanType.matches(regex);
+        }
+        return cleanType.equalsIgnoreCase(mime);
+    }
+
 }

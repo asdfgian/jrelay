@@ -97,7 +97,7 @@ public class Style {
         Font newFont;
         switch (lang) {
             case ZH, JA, KO -> newFont = new Font("Noto Sans CJK JP", Font.PLAIN, 13);
-            default -> newFont = new Font("Ubuntu", Font.PLAIN, 15);
+            default -> newFont = new Font("Segoe UI", Font.PLAIN, 15);
         }
         UIManager.put("defaultFont", newFont);
     }

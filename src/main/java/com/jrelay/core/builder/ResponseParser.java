@@ -122,8 +122,7 @@ public class ResponseParser {
     }
 
     public static class CustomPrettyPrinter extends DefaultPrettyPrinter {
-        private static final DefaultIndenter INDENTER =
-                new DefaultIndenter("  ", System.lineSeparator());
+        private static final DefaultIndenter INDENTER = new DefaultIndenter("  ", System.lineSeparator());
 
         public CustomPrettyPrinter() {
             this._arrayIndenter = INDENTER;

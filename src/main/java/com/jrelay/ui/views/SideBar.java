@@ -86,7 +86,7 @@ public class SideBar extends JPanel implements Struct {
 
         private final JLabel titleLabel = new JLabel(UiUtils.APP_NAME);
         @Getter
-        private final TextField searchField  = new TextField();
+        private final TextField searchField = new TextField();
         @Getter
         private final JTabbedPane tabbedPane = new JTabbedPane();
         @Getter
@@ -220,7 +220,7 @@ public class SideBar extends JPanel implements Struct {
         private final JRadioButton purple = new JRadioButton();
         private final JRadioButton red = new JRadioButton();
 
-        private final JLabel shortcutsLabel = new JLabel("SHORTCUTS");
+        private final JLabel shortcutsLabel = new JLabel("Shortcuts");
 
         @Getter
         private List<JButton> themeButtons;
@@ -278,7 +278,9 @@ public class SideBar extends JPanel implements Struct {
             this.add(titleLabel, "wrap");
             this.add(languageLabel, "wrap");
             this.add(selectLanguage, "w 120!, h 25!, wrap");
+
             this.add(separator(), "grow, wrap");
+
             this.add(themeLabel, "wrap");
             this.add(backgroundLabel, "wrap");
             themesContainer.add(systemThemeButton, "grow");
@@ -293,7 +295,9 @@ public class SideBar extends JPanel implements Struct {
             radioBtnContainer.add(purple, "grow");
             radioBtnContainer.add(red, "grow");
             this.add(radioBtnContainer, "h 20!, grow, wrap");
+
             this.add(separator(), "grow, wrap");
+
             this.add(shortcutsLabel, "wrap");
         }
 
@@ -304,7 +308,8 @@ public class SideBar extends JPanel implements Struct {
             Style.setLabelText(themeLabel, LangManager.text("sidebar.settingsPanel.themeLabel.text"));
             Style.setLabelText(backgroundLabel, LangManager.text("sidebar.settingsPanel.backgroundLabel.text"));
             Style.setLabelText(accentColorLabel, LangManager.text("sidebar.settingsPanel.accentColorLabel.text"));
-            //Style.setLabelText(shortcutsLabel, LangManager.text("sidebar.settingsPanel.interceptorLabel.text"));
+            // Style.setLabelText(shortcutsLabel,
+            // LangManager.text("sidebar.settingsPanel.interceptorLabel.text"));
             Style.setToolTip(systemThemeButton,
                     LangManager.text("sidebar.settingsPanel.systemThemeButton.toolTip.text"));
             Style.setToolTip(darkThemeButton, LangManager.text("sidebar.settingsPanel.darkThemeButton.toolTip.text"));

@@ -24,13 +24,18 @@ public class PlainTextEditor extends JPanel implements Struct {
 
     @Override
     public void initComponents() {
-        scroll = new JScrollPane(textArea);
+        scroll = new JScrollPane(
+                textArea,
+                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         TextComponentUtils.addDefaultContextMenu(textArea);
     }
 
     @Override
     public void configureStyle() {
         Style.setLayout(this, new MigLayout("fill, insets 0"));
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
         Style.setBackgroundColor(this, Colors.SECONDARY_COLOR);
     }
 
