@@ -39,7 +39,7 @@ public class Frame extends JFrame implements Struct {
     private final Footer footer;
 
     public Frame(SideBar sideBar, Workbench workbench, Footer footer) {
-        super(UiUtils.APP_NAME + " " + UiUtils.APP_VERSION);
+        super(UiUtils.APP_NAME + " (" + UiUtils.APP_VERSION + ")");
         this.sideBar = sideBar;
         this.workbench = workbench;
         this.consolePanel = new ConsolePanel();
@@ -49,28 +49,28 @@ public class Frame extends JFrame implements Struct {
 
     @Override
     public void initComponents() {
-        layout = new MigLayout("fill", "0[]1[100%, fill]0", "0[]1[fill]0");
+        layout = new MigLayout("fill, insets 0", "[]1[grow, fill]", "[grow, fill]1[]");
     }
 
     @Override
     public void configureStyle() {
         Style.setFrameMinSize(this);
-        Style.setFrameSize(this);
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         this.setLayout(new BorderLayout());
         this.setResizable(true);
         this.setLocationRelativeTo(null);
         this.setGlassPane(new GlassPane());
-        this.setIconImage(new ImageIcon("img/JRelay.png").getImage());
+        this.setIconImage(new ImageIcon(this.getClass().getResource("/img/jrelay-500x500.png")).getImage());
         Style.setLayout(mainContainer, layout);
         Style.setBackgroundColor(mainContainer, Colors.SECONDARY_COLOR);
     }
 
     @Override
     public void compose() {
-        mainContainer.add(sideBar, "w " + sideBar.getCloseWidth() + "!, h 100%");
+        mainContainer.add(sideBar, "w " + sideBar.getCloseWidth() + "!, growy");
         mainContainer.add((Component) workbench, "grow, wrap");
         mainContainer.add(footer, "w 100%, h 30!, spanx 2");
+
         this.add(mainContainer);
     }
 

@@ -356,9 +356,11 @@ public class RequestPanel extends JPanel implements Struct, Translatable {
             @Override
             public void compose() {
                 this.add(titleLabel, "wrap");
+
                 containerUsername.add(usernameLabel, "wrap");
                 containerUsername.add(usernameField, "h 30!, growx");
                 this.add(containerUsername, "growx");
+
                 containerPassword.add(passwordLabel, "wrap");
                 containerPassword.add(passwordField, "h 30!, growx");
                 this.add(containerPassword, "growx");
@@ -416,9 +418,9 @@ public class RequestPanel extends JPanel implements Struct, Translatable {
             @Override
             public void compose() {
                 this.add(titleLabel, "wrap");
-                this.add(tokenField, "h 150!, growx, wrap");
+                this.add(tokenField, "h 60!, growx, wrap");
                 containerPrefix.add(new JLabel("Token Prefix"), "right");
-                containerPrefix.add(prefixField, "h 30!, growx");
+                containerPrefix.add(prefixField, "h 25!, growx");
                 this.add(containerPrefix, "growx");
             }
 

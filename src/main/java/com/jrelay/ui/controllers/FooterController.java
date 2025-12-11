@@ -210,7 +210,7 @@ public class FooterController {
 
     private void setupContributeButton() {
         footer.getContributeButton().addActionListener(e -> {
-            String url = "https://github.com/ASDFG14N/backend-spring";
+            final String url = "https://github.com/asdfgian/jrelay";
             var os = AppController.osManager.getOperatingSystem();
             if (os.toString().equals("LINUX")) {
                 try {

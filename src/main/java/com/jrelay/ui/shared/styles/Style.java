@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.LayoutManager;
-import java.awt.Toolkit;
 import java.awt.Window;
 import java.util.Map;
 
@@ -39,19 +38,22 @@ public class Style {
     private Style() {
     }
 
-    private static final int MIN_SCREEN_W = Breakpoint.MD.getMinWidth();
-    private static final int MIN_SCREEN_H = 830;
+    private static final int MIN_SCREEN_W = 800;
+    private static final int MIN_SCREEN_H = 700;
+
     private static final int ARC = 10;
 
     public static void installLightTheme() {
         Colors.SECONDARY_COLOR = new Color(228, 228, 228);
         Colors.TEXT_FIELD_COLOR = new Color(228, 228, 228);
+        System.setProperty("flatlaf.uiScale", "1.0");
         LightLaf.setup();
         setFont(LangManager.getLang());
     }
 
     public static void installDarkTheme() {
         FlatLaf.setGlobalExtraDefaults(Map.of("@accentColor", Colors.ACCENT_COLOR.getColor()));
+        System.setProperty("flatlaf.uiScale", "1.0");
         DarkLaf.setup();
         setFont(LangManager.getLang());
     }
@@ -111,16 +113,6 @@ public class Style {
 
     public static void setFrameMinSize(JFrame jFrame) {
         jFrame.setMinimumSize(new Dimension(MIN_SCREEN_W, MIN_SCREEN_H));
-    }
-
-    public static void setFrameSize(JFrame jFrame) {
-        final Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-        int halfW = screen.width / 2;
-        int halfH = screen.height / 2;
-
-        int width = Math.max(halfW, MIN_SCREEN_W);
-        int height = Math.max(halfH, MIN_SCREEN_H);
-        jFrame.setSize(new Dimension(width, height));
     }
 
     public static void setTransparent(AbstractButton btn) {

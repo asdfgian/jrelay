@@ -29,7 +29,7 @@ public class HttpWelcomePanel extends JPanel implements Struct, Translatable {
 
     @Override
     public void configureStyle() {
-        Style.setLayout(this, new MigLayout("fillx, insets 30, aligny 50%", "[center]", "[]10[][]"));
+        Style.setLayout(this, new MigLayout("fillx, insets 20, aligny 50%", "[center]", "[]6[][]"));
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         Style.setFontSize(titleLabel, 20);
         subtitleLabel.setHorizontalAlignment(SwingConstants.CENTER);

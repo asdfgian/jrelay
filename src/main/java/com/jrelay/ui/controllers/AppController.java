@@ -404,6 +404,7 @@ public class AppController {
         }
 
         frame.setWorkbench(newWorkbench);
+
         mainContainer.add((Component) newWorkbench, "cell 1 0, grow, wrap", 1);
         mainContainer.revalidate();
         mainContainer.repaint();
@@ -505,7 +506,7 @@ public class AppController {
      *
      * @param tabs A list of {@link ClosableTab} objects representing the tabs.
      * @return {@code true} if any tab does not have a close icon; {@code false}
-     * otherwise.
+     *         otherwise.
      * @author ASDFG14N
      * @since 06-08-2025
      */

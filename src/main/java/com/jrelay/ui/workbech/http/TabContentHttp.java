@@ -48,13 +48,11 @@ public class TabContentHttp extends JSplitPane implements Struct {
 
     public void setHorizontalOrientation() {
         this.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
-        this.setResizeWeight(0.5);
         animateDividerTo();
     }
 
     public void setVerticalOrientation() {
         this.setOrientation(JSplitPane.VERTICAL_SPLIT);
-        this.setResizeWeight(0.5);
         animateDividerTo();
     }
 
@@ -65,7 +63,7 @@ public class TabContentHttp extends JSplitPane implements Struct {
                     : getHeight();
 
             int currentLocation = getDividerLocation();
-            int targetLocation = (int) (totalSize * (float) 0.5);
+            int targetLocation = (int) (totalSize * (float) 0.53);
 
             Animator animator = new Animator(250)
                     .onTimingEvent(fraction -> {

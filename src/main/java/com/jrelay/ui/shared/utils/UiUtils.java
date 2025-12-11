@@ -100,7 +100,7 @@ public class UiUtils {
         public final static Icon TRASH_TREE_ICON = new FlatSVGIcon("icon/trash.svg", 0.020f)
                         .setColorFilter(new FlatSVGIcon.ColorFilter(color -> Colors.ICON_COLOR));
 
-        public final static Icon EXCHANGE_ICON = new FlatSVGIcon("icon/exchange.svg", 1.5f)
+        public final static Icon EXCHANGE_ICON = new FlatSVGIcon("icon/exchange.svg", 1.0f)
                         .setColorFilter(new FlatSVGIcon.ColorFilter(color -> Colors.ICON_COLOR));
 
         public final static Icon WARNING_ICON = new FlatSVGIcon("icon/warning.svg", 1.5f)
