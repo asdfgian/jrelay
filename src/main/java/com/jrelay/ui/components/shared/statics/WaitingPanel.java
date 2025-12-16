@@ -31,7 +31,10 @@ public class WaitingPanel extends JPanel implements Struct, Translatable {
 
     @Override
     public void configureStyle() {
-        Style.setLayout(this, new MigLayout("fillx, insets 100 150 100 150, aligny 50%", "[center]", "[]10[]"));
+        Style.setLayout(this, new MigLayout(
+                "fillx, insets 0 150 0 150, aligny 50%",
+                "[center]",
+                "[]10[]"));
 
         loadingLabel.setHorizontalAlignment(SwingConstants.CENTER);
 

@@ -53,10 +53,6 @@ public record OAuth1Auth(
     public enum SignatureMethod {
         HMAC_SHA1,
         HMAC_SHA256,
-        HMAC_SHA512,
-        RSA_SHA1,
-        RSA_SHA256,
-        RSA_SHA512,
         PLAINTEXT
     }
 
