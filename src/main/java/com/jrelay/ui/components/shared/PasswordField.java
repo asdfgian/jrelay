@@ -19,6 +19,7 @@ public class PasswordField extends JPanel implements Struct {
 
     public PasswordField() {
         this.build();
+        this.setBackgroundColor(Colors.TEXT_FIELD_COLOR);
     }
 
     @Override

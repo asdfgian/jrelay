@@ -54,14 +54,19 @@ public enum ContentDisplayType {
     }
 
     private static boolean matchesMime(String mime, String cleanType) {
-        if (mime.endsWith("*")) {
-            return cleanType.startsWith(mime.substring(0, mime.length() - 1));
+
+        if (mime.endsWith("/*")) {
+            return cleanType.startsWith(
+                    mime.substring(0, mime.length() - 1));
         }
-        if (mime.contains("*")) {
-            String regex = mime.replace("*", ".*");
-            return cleanType.matches(regex);
+
+        if (mime.contains("*+")) {
+            String prefix = mime.substring(0, mime.indexOf('*'));
+            String suffix = mime.substring(mime.indexOf('*') + 1);
+            return cleanType.startsWith(prefix) && cleanType.endsWith(suffix);
         }
-        return cleanType.equalsIgnoreCase(mime);
+
+        return cleanType.equals(mime);
     }
 
 }

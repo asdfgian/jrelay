@@ -21,7 +21,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.JTextComponent;
 
-import com.jrelay.core.builder.HttpClient;
 import com.jrelay.core.models.request.HttpHeader;
 import com.jrelay.core.models.request.QueryParameter;
 import com.jrelay.core.models.request.Request;
@@ -110,7 +109,7 @@ public class RequestPanelController {
         this.closableTab = closableTab;
         this.fn = fn;
         this.lifecycle = lifecycle;
-        this.httpService = new HttpClientServiceImpl(HttpClient.getInstance());
+        this.httpService = new HttpClientServiceImpl();
 
         this.requestToolbarController = new RequestToolbarController(requestPanel.getToolbar());
         this.paramsPanelController = new ParamsPanelController(requestPanel.getParamsPanel());
@@ -504,7 +503,7 @@ public class RequestPanelController {
                 basicPanel.getUsernameField().setText(username);
                 basicPanel.getPasswordField().setText(password);
             } else if (auth instanceof BearerTokenAuth(String token)) {
-                //final var bearer = authPanel.getAuthBearerPanel();
+                // final var bearer = authPanel.getAuthBearerPanel();
                 System.out.println(token);
             }
         }
@@ -1222,7 +1221,7 @@ public class RequestPanelController {
      * {@code Request} model.
      *
      * @return a populated Request object reflecting the current UI input
-     * state
+     *         state
      * @author @ASDG14N
      * @since 28-07-2025
      */

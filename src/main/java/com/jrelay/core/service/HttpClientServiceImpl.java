@@ -3,6 +3,7 @@ package com.jrelay.core.service;
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 
+import com.jrelay.core.builder.HttpClient;
 import com.jrelay.core.builder.RequestBuilder;
 import com.jrelay.core.builder.ResponseParser;
 import com.jrelay.core.builder.RequestBuilder.RequestBuildResult;
@@ -14,7 +15,10 @@ import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import org.jetbrains.annotations.NotNull;
 
-public record HttpClientServiceImpl(OkHttpClient httpClient) implements HttpClientService {
+public final class HttpClientServiceImpl implements HttpClientService {
+
+    public HttpClientServiceImpl() {
+    }
 
     @Override
     public CompletableFuture<Response> sendAsync(Request request) {
@@ -27,9 +31,13 @@ public record HttpClientServiceImpl(OkHttpClient httpClient) implements HttpClie
             return future;
         }
 
+        OkHttpClient baseClient = HttpClient.getInstance();
+        OkHttpClient clientToUse = baseClient;
+
         long start = System.nanoTime();
 
-        httpClient.newCall(buildResult.request()).enqueue(new Callback() {
+        clientToUse.newCall(buildResult.request()).enqueue(new Callback() {
+
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 future.complete(new Response("Connection error: " + e.getMessage()));
@@ -37,9 +45,17 @@ public record HttpClientServiceImpl(OkHttpClient httpClient) implements HttpClie
 
             @Override
             public void onResponse(@NotNull Call call, okhttp3.@NotNull Response response) {
-                long duration = (System.nanoTime() - start) / 1_000_000;
-                Response parsedResponse = ResponseParser.parse(response, duration);
-                future.complete(parsedResponse);
+                try {
+                    long duration = (System.nanoTime() - start) / 1_000_000;
+
+                    Response parsedResponse = ResponseParser.parse(response, duration);
+
+                    future.complete(parsedResponse);
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    future.complete(new Response("Response parsing error: " + ex.getMessage()));
+                }
             }
         });
 

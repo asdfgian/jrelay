@@ -2,13 +2,16 @@ package com.jrelay.ui.workbech.http;
 
 import java.awt.Cursor;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JToggleButton;
 
@@ -18,6 +21,8 @@ import com.jrelay.core.models.request.Request;
 import com.jrelay.core.models.request.auth.Auth;
 import com.jrelay.core.models.request.auth.BasicAuth;
 import com.jrelay.core.models.request.auth.BearerTokenAuth;
+import com.jrelay.core.models.request.auth.OAuth1Auth;
+import com.jrelay.core.models.request.auth.OAuth1Auth.SignatureMethod;
 import com.jrelay.core.models.request.body.Body;
 import com.jrelay.core.models.request.body.FormDataBody.FormDataPart;
 import com.jrelay.core.models.request.body.FormEncodeBody.FormEncodePart;
@@ -258,12 +263,15 @@ public class RequestPanel extends JPanel implements Struct, Translatable {
 
     public class AuthPanel extends JPanel implements Struct, Translatable {
         private final JTabbedPane tabbedPane = new JTabbedPane();
+
         private final NonePanel nonePanel = new NonePanel(
                 LangManager.text("requestPanel.authPanel.nonePanel.message.text"));
         @Getter
         private final AuthBasicPanel authBasicPanel = new AuthBasicPanel();
         @Getter
         private final AuthBearerPanel authBearerPanel = new AuthBearerPanel();
+        @Getter
+        private final AuthOAuth1Panel authOAuth1Panel = new AuthOAuth1Panel();
 
         private AuthPanel() {
             this.build();
@@ -288,6 +296,7 @@ public class RequestPanel extends JPanel implements Struct, Translatable {
             tabbedPane.addTab(LangManager.text("requestPanel.authPanel.tabbedPane.tab1.title.text"), nonePanel);
             tabbedPane.addTab(LangManager.text("requestPanel.authPanel.tabbedPane.tab2.title.text"), authBasicPanel);
             tabbedPane.addTab(LangManager.text("requestPanel.authPanel.tabbedPane.tab3.title.text"), authBearerPanel);
+            tabbedPane.addTab("OAuth 1.0", authOAuth1Panel);
             this.add(tabbedPane, "grow");
         }
 
@@ -311,6 +320,12 @@ public class RequestPanel extends JPanel implements Struct, Translatable {
                 case 2 -> {
                     if (authBearerPanel.isValidForm()) {
                         yield authBearerPanel.getAuth();
+                    }
+                    yield null;
+                }
+                case 3 -> {
+                    if (authOAuth1Panel.isValidForm()) {
+                        yield authOAuth1Panel.getAuth();
                     }
                     yield null;
                 }
@@ -438,6 +453,184 @@ public class RequestPanel extends JPanel implements Struct, Translatable {
             public Auth getAuth() {
                 String prefix = prefixField.getText().isEmpty() ? "Bearer" : prefixField.getText().trim();
                 return new BearerTokenAuth(prefix + " " + tokenField.getText());
+            }
+
+        }
+
+        public class AuthOAuth1Panel extends JPanel implements Struct, Translatable {
+
+            private final JPanel contentPanel = new JPanel();
+            private final JScrollPane scrollPane = new JScrollPane(contentPanel);
+
+            private final JLabel descriptionLabel = new JLabel(
+                    "The authorization data will be automatically generated when you send the request.");
+
+            private final JLabel dataToLabel = new JLabel("Add auth data to");
+            private final JComboBox<String> dataToComboBox = new JComboBox<>(new String[] {
+                    "Auto",
+                    "Request URL",
+                    "Request Body",
+                    "Request Headers"
+            });
+
+            private final JLabel signatureMethodLabel = new JLabel("Signature Method");
+            private final JComboBox<String> signatureMethodComboBox = new JComboBox<>(
+                    Arrays.stream(SignatureMethod.values())
+                            .map(Enum::name)
+                            .toArray(String[]::new));
+
+            private final JLabel consumerKeyLabel = new JLabel("Consumer Key");
+            private final PasswordField consumerKeyField = new PasswordField();
+
+            private final JLabel consumerSecretLabel = new JLabel("Consumer Secret");
+            private final PasswordField consumerSecretField = new PasswordField();
+
+            private final JLabel accessTokenLabel = new JLabel("Access Token");
+            private final PasswordField accessTokenField = new PasswordField();
+
+            private final JLabel tokenSecretLabel = new JLabel("Token Secret");
+            private final PasswordField tokenSecretField = new PasswordField();
+
+            private final JLabel callbackUrlLabel = new JLabel("Callback URL");
+            private final TextField callbackUrlField = new TextField();
+
+            private final JLabel varifierLabel = new JLabel("Verifier");
+            private final PasswordField varifierField = new PasswordField();
+
+            private final JLabel timestampLabel = new JLabel("Timestamp");
+            private final TextField timestampField = new TextField();
+
+            private final JLabel nonceLabel = new JLabel("Nonce");
+            private final TextField nonceField = new TextField();
+
+            private final JLabel versionLabel = new JLabel("Version");
+            private final TextField versionField = new TextField();
+
+            private final JLabel realmLabel = new JLabel("Realm");
+            private final TextField realmField = new TextField();
+
+            public AuthOAuth1Panel() {
+                this.build();
+            }
+
+            @Override
+            public void initComponents() {
+                versionField.setText("1.0");
+
+                realmField.setPlaceholder("realm@exaple.com");
+            }
+
+            @Override
+            public void configureStyle() {
+                this.setLayout(new MigLayout("fill, insets 0", "[grow]", "[grow]"));
+
+                contentPanel.setLayout(
+                        new MigLayout(
+                                "fillx, wrap 2, insets 10",
+                                "[grow 0][grow, fill]"));
+
+                scrollPane.setBorder(null);
+
+            }
+
+            @Override
+            public void compose() {
+
+                contentPanel.add(descriptionLabel, "span 2, growx, gapbottom 15");
+
+                contentPanel.add(dataToLabel);
+                contentPanel.add(dataToComboBox, "h 30!, gapleft 50, growx");
+
+                contentPanel.add(new JSeparator(), "span 2, growx, gaptop 10, gapbottom 10");
+
+                contentPanel.add(signatureMethodLabel);
+                contentPanel.add(signatureMethodComboBox, "h 30!, gapleft 50, growx");
+
+                contentPanel.add(consumerKeyLabel);
+                contentPanel.add(consumerKeyField, "h 30!, gapleft 50, growx");
+
+                contentPanel.add(consumerSecretLabel);
+                contentPanel.add(consumerSecretField, "h 30!, gapleft 50, growx");
+
+                contentPanel.add(accessTokenLabel);
+                contentPanel.add(accessTokenField, "h 30!, gapleft 50, growx");
+
+                contentPanel.add(tokenSecretLabel);
+                contentPanel.add(tokenSecretField, "h 30!, gapleft 50, growx");
+
+                contentPanel.add(new JSeparator(), "h 0, span 2, growx, gaptop 15");
+
+                // Advanced configuration
+                contentPanel.add(new JLabel("> Advanced configuration"), "span 2");
+
+                contentPanel.add(callbackUrlLabel);
+                contentPanel.add(callbackUrlField, "h 30!, gapleft 50, growx");
+
+                contentPanel.add(varifierLabel);
+                contentPanel.add(varifierField, "h 30!, gapleft 50, growx");
+
+                contentPanel.add(timestampLabel);
+                contentPanel.add(timestampField, "h 30!, gapleft 50, growx");
+
+                contentPanel.add(nonceLabel);
+                contentPanel.add(nonceField, "h 30!, gapleft 50, growx");
+
+                contentPanel.add(versionLabel);
+                contentPanel.add(versionField, "h 30!, gapleft 50, growx");
+
+                contentPanel.add(realmLabel);
+                contentPanel.add(realmField, "h 30!, gapleft 50, growx");
+
+                contentPanel.add(new JSeparator(), "span 2, growx, gaptop 10");
+
+                // Checkboxes
+                contentPanel.add(new JCheckBox("Include body hash"), "span 2");
+                contentPanel.add(new JCheckBox("Add empty parameters to signature"), "span 2");
+
+                this.add(scrollPane, "grow");
+            }
+
+            @Override
+            public void updateText() {
+            }
+
+            private boolean isValidForm() {
+                if (dataToComboBox.getSelectedIndex() < 0)
+                    return false;
+                if (signatureMethodComboBox.getSelectedIndex() < 0)
+                    return false;
+
+                if (consumerKeyField.getPassword().isEmpty())
+                    return false;
+                if (consumerSecretField.getPassword().isEmpty())
+                    return false;
+
+                return true;
+            }
+
+            public Auth getAuth() {
+                String consumerKey = consumerKeyField.getPassword();
+                String consumerSecret = consumerSecretField.getPassword();
+                String accessToken = accessTokenField.getPassword();
+                String tokenSecret = tokenSecretField.getPassword();
+                String verifier = varifierField.getPassword();
+                String realm = realmField.getText();
+
+                return new OAuth1Auth(
+                        dataToComboBox.getSelectedIndex(),
+                        signatureMethodComboBox.getSelectedIndex(),
+                        consumerKey,
+                        consumerSecret,
+                        accessToken.isEmpty() ? null : accessToken,
+                        tokenSecret.isEmpty() ? null : tokenSecret,
+                        callbackUrlField.getText().isEmpty() ? null : callbackUrlField.getText(),
+                        verifier.isEmpty() ? null : verifier,
+                        timestampField.getText().isEmpty() ? null : timestampField.getText(),
+                        nonceField.getText().isEmpty() ? null : nonceField.getText(),
+                        versionField.getText().isEmpty() ? null : versionField.getText(),
+                        realm.isEmpty() ? null : realm, // realm como null si está vacío
+                        false,
+                        false);
             }
 
         }

@@ -1,6 +1,8 @@
 package com.jrelay.core.builder;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import java.util.Collections;
 import java.util.Map;
 
 import com.jrelay.core.models.request.auth.Auth;
@@ -39,21 +41,18 @@ public class AuthHeaderBuilder {
      * @param auth the authentication object (e.g. {@link BasicAuth} or
      *             {@link BearerTokenAuth})
      * @return a map containing the Authorization header key and its corresponding
-     * value
-     * @throws IllegalArgumentException if the authentication type is not supported
+     *         value
      */
     public static Map<String, String> build(Auth auth) {
         if (auth instanceof BasicAuth(String username, String password)) {
             String credentials = username + ":" + password;
-            String encoded = java.util.Base64.getEncoder()
+            String encoded = Base64.getEncoder()
                     .encodeToString(credentials.getBytes(StandardCharsets.UTF_8));
             return Map.of("Authorization", "Basic " + encoded);
-        }
-
-        if (auth instanceof BearerTokenAuth(String token)) {
+        } else if (auth instanceof BearerTokenAuth(String token)) {
             return Map.of("Authorization", token);
+        } else {
+            return Collections.emptyMap();
         }
-
-        throw new IllegalArgumentException("Error: " + auth.getClass());
     }
 }
